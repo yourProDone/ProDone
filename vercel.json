@@ -35,11 +35,6 @@
     }
   ],
   "regions": ["iad1", "sfo1", "fra1", "hnd1", "syd1"],
-  "functions": {
-    "pages/api/**/*.js": {
-      "maxDuration": 10
-    }
-  },
   "env": {
     "NODE_ENV": "production"
   }

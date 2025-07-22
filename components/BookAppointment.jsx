@@ -50,6 +50,16 @@ const BookAppointment = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-primary-950 py-8 px-2 sm:px-4">
       <div className="w-full max-w-3xl bg-dark-900 rounded-2xl shadow-2xl p-6 flex flex-col items-center border border-primary-700/30">
+        {/* Testimonial above booking */}
+        <div className="w-full mb-6 p-4 bg-gradient-to-r from-primary-900/30 to-dark-800 rounded-lg border-l-4 border-primary-500 shadow flex items-center">
+          <svg className="w-6 h-6 text-primary-400 mr-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 17a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4h1a4 4 0 0 1 4 4v6a4 4 0 0 1-4 4H9zm6 0a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4h1a4 4 0 0 1 4 4v6a4 4 0 0 1-4 4h-1z"/></svg>
+          <div>
+            <p className="text-gray-200 italic mb-2">
+              "ProDone's expertise in AI and energy technology was exactly what we needed to scale our platform. Their team's technical depth and commitment made them the perfect partner for our growth journey."
+            </p>
+            <span className="text-primary-400 font-semibold">Simon Ohlmér, CEO, KeepAI</span>
+          </div>
+        </div>
         <h2 className="text-4xl font-bold text-white mb-2 text-center">Book a <span className="gradient-text">30-Minute Meeting</span></h2>
         <p className="text-lg text-gray-300 mb-6 text-center leading-relaxed max-w-3xl">
           Schedule a Google Meet with our team at your convenience. Select a time slot below and you'll receive a confirmation email with the meeting link. We look forward to connecting with you!
@@ -83,8 +93,8 @@ const BookAppointment = () => {
         {!isLoading && !error && (
           <div
             ref={calendlyRef}
-            className="w-full min-h-[700px] bg-white rounded-xl overflow-hidden shadow-lg border border-primary-500/20"
-            style={{ minHeight: 700 }}
+            className="w-full max-h-[700px] bg-white rounded-xl overflow-hidden shadow-lg border border-primary-500/20"
+            style={{ maxHeight: 700 }}
           />
         )}
       </div>

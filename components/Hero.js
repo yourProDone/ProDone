@@ -84,24 +84,25 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="home" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
       {/* Animated Background */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full"
         style={{ background: 'linear-gradient(135deg, #111 0%, #1e293b 100%)' }}
       />
-
+      
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-dark-950/80 via-dark-900/60 to-primary-900/20" />
-
-      {/* Content */}
-      <div className="relative z-10 container-custom text-center px-4 sm:px-6 lg:px-8">
+      <div className="absolute inset-0 bg-gradient-to-br from-dark-950/90 via-dark-900/70 to-primary-900/10" />
+      
+      {/* Main Content Container */}
+      <div className="relative z-10 w-full flex flex-col items-center py-12">
+        {/* Hero Content */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-4xl mx-auto"
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="w-full max-w-4xl mx-auto px-4 text-center"
         >
           {/* Badge */}
           {/* Removed 'We're Hiring - Join Our Team' badge */}
@@ -137,20 +138,19 @@ const Hero = () => {
             transition={{ delay: 0.9, duration: 0.8 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
-            <motion.button
+            <motion.a
+              href="#contact"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="btn-primary flex items-center space-x-2 group"
-              onClick={() => {
-                const contactSection = document.querySelector('#contact');
-                if (contactSection) {
-                  contactSection.scrollIntoView({ behavior: 'smooth' });
-                }
+              className="btn-primary flex items-center space-x-2 group px-6 py-3 rounded-lg bg-primary-500 text-white font-bold shadow-xl hover:bg-primary-600 transition duration-300 ring-2 ring-primary-400/20"
+              onClick={(e) => {
+                e.preventDefault();
+                window.dispatchEvent(new Event('open-calendly-meeting'));
               }}
             >
-              <span>📞 Book a Call</span>
+              <span>📞 Get Free Consultation</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </motion.button>
+            </motion.a>
 
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -190,6 +190,7 @@ const Hero = () => {
 
       {/* Floating Elements */}
       <div className="absolute inset-0 pointer-events-none">
+        {/* Animated floating elements */}
         <motion.div
           animate={{ y: [0, -20, 0] }}
           transition={{ duration: 4, repeat: Infinity }}

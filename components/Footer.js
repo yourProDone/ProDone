@@ -59,8 +59,7 @@ const Footer = () => {
             <p className="text-gray-400 mb-6 leading-relaxed text-base">
               We build cutting-edge digital solutions that help businesses thrive in the modern digital landscape.
             </p>
-            
-            {/* Social Links removed */}
+
           </div>
 
           {/* Company Links */}

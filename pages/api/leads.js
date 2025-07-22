@@ -5,11 +5,19 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { industry, businessType, name, city, phone, email, message } = req.body;
+  const { industry, businessType, name, city, phone, email, message, submissionType } = req.body;
 
-  // Validate required fields
-  if (!industry || !businessType || !name || !city || !phone || !email || !message) {
-    return res.status(400).json({ error: 'All fields are required' });
+  // Validate required fields based on submission type
+  if (submissionType === 'full') {
+    // Full form validation
+    if (!industry || !businessType || !name || !city || !phone || !email || !message) {
+      return res.status(400).json({ error: 'All fields are required for full submission' });
+    }
+  } else {
+    // Minimal form validation (just name, email, message)
+    if (!name || !email || !message) {
+      return res.status(400).json({ error: 'Name, email, and message are required' });
+    }
   }
 
   // Check if environment variables are configured
@@ -35,7 +43,9 @@ export default async function handler(req, res) {
     const mailOptions = {
       from: `ProDone Website <${process.env.EMAIL_USER}>`,
       to: process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
-      subject: 'New Lead Magnet Submission - ProDone',
+      subject: submissionType === 'full' 
+        ? 'New Lead Magnet Submission - ProDone (Full)' 
+        : 'New Message from Website - ProDone',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #ef4444; border-bottom: 2px solid #ef4444; padding-bottom: 10px;">
@@ -43,11 +53,13 @@ export default async function handler(req, res) {
           </h2>
           
           <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #333; margin-top: 0;">Contact Information</h3>
+            <h3 style="color: #333; margin-top: 0;">${submissionType === 'full' ? 'Contact Information' : 'New Message'}</h3>
             <p><strong>Name:</strong> ${name}</p>
             <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Phone:</strong> ${phone}</p>
-            <p><strong>City:</strong> ${city}</p>
+            ${phone ? `<p><strong>Phone:</strong> ${phone}</p>` : ''}
+            ${city ? `<p><strong>City:</strong> ${city}</p>` : ''}
+            ${industry ? `<p><strong>Industry:</strong> ${industry}</p>` : ''}
+            ${businessType ? `<p><strong>Business Type:</strong> ${businessType}</p>` : ''}
           </div>
 
           <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">

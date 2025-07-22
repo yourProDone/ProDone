@@ -66,6 +66,19 @@ const Navbar = ({ darkMode, setDarkMode }) => {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-500 transition-all duration-300 group-hover:w-full"></span>
               </motion.button>
             ))}
+            {/* Persistent CTA */}
+            <a
+              href="#contact"
+              className="ml-4 px-6 py-2 rounded-lg bg-primary-500 text-white font-bold shadow-xl hover:bg-primary-600 transition duration-300 ring-2 ring-primary-400/20"
+              style={{ marginLeft: '2rem' }}
+              onClick={e => {
+                e.preventDefault();
+                window.dispatchEvent(new Event('open-calendly-meeting'));
+                setIsMobileMenuOpen(false);
+              }}
+            >
+            📞 Get Free Consultation
+            </a>
           </div>
 
           {/* Mobile Menu Button Only (removed dark mode toggle) */}

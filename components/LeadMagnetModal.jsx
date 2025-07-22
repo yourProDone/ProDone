@@ -20,7 +20,7 @@ const LeadMagnetModal = () => {
   const watchedValues = watch();
 
   useEffect(() => {
-    const timer = setTimeout(() => setOpen(true), 3000);
+    const timer = setTimeout(() => setOpen(true), 30000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -199,7 +199,7 @@ const LeadMagnetModal = () => {
                     {...register('phone', { 
                       required: 'Phone required', 
                       pattern: { 
-                        value: /^[+]?[-\d\s()]{7,20}$/, 
+                        value: /^[+]?[\d\s()]{7,20}$/, 
                         message: 'Invalid phone number' 
                       }
                     })}

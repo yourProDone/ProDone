@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, CheckCircle } from 'lucide-react';
+import Logo from './Logo';
 
 const CALENDLY_URL = 'https://calendly.com/yourprodone/30min?hide_event_type_details=1&hide_gdpr_banner=1';
 
@@ -13,10 +14,9 @@ const Contact = () => {
   useEffect(() => {
     const handler = (e) => {
       if (e.data.event && e.data.event === 'calendly.event_scheduled') {
-        console.log('Calendly event scheduled received', e.data);
         setShowCalendly(false);
         setShowConfirmation(true);
-        
+
         // Store meeting details for the popup
         if (e.data.payload) {
           const { invitee, event } = e.data.payload;
@@ -28,16 +28,16 @@ const Contact = () => {
             meetingLink: event.location || event.conferencing?.join_url || '',
             confirmationEmail: true
           };
-          
+
           // Store in localStorage for the popup to access
           localStorage.setItem('calendly_meeting_details', JSON.stringify(meetingDetails));
-          
+
           // Store meeting link separately for easy access
           if (meetingDetails.meetingLink) {
             localStorage.setItem('calendly_meeting_link', meetingDetails.meetingLink);
           }
         }
-        
+
         setTimeout(() => setShowConfirmation(false), 7000);
       }
     };
@@ -123,17 +123,36 @@ const Contact = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 30 }}
             transition={{ duration: 0.5 }}
-            className="flex flex-col items-center justify-center bg-dark-900/90 rounded-2xl shadow-2xl border border-green-600 px-8 py-12 max-w-xl w-full text-center"
+            className="flex flex-col items-center justify-center bg-gradient-to-br from-green-500/90 via-green-600/90 to-green-700/90 rounded-3xl shadow-3xl border-0 px-8 py-12 max-w-md w-full text-center relative overflow-hidden"
+            style={{
+              boxShadow: '0 8px 32px 0 rgba(34,197,94,0.25), 0 1.5px 8px 0 rgba(0,0,0,0.10)',
+              backdropFilter: 'blur(8px)'
+            }}
           >
-            <CheckCircle className="w-16 h-16 text-green-400 mb-4 mx-auto" />
-            <h2 className="text-3xl font-bold text-green-400 mb-2">You are scheduled!</h2>
-            <p className="text-lg text-gray-200 mb-4">Your meeting has been booked. Check your email for the confirmation and Google Meet link.</p>
-            <button
-              onClick={() => setShowConfirmation(false)}
-              className="mt-2 px-6 py-2 rounded-lg bg-green-500 hover:bg-green-600 text-white font-semibold text-lg shadow-lg transition-colors"
-            >
-              Close
-            </button>
+            <div className="absolute inset-0 pointer-events-none z-0">
+              <svg width="100%" height="100%" viewBox="0 0 400 400" className="absolute inset-0 w-full h-full" style={{ opacity: 0.12 }}>
+                <defs>
+                  <radialGradient id="popupGlow" cx="50%" cy="50%" r="80%">
+                    <stop offset="0%" stopColor="#bbf7d0" />
+                    <stop offset="100%" stopColor="#22c55e" stopOpacity="0" />
+                  </radialGradient>
+                </defs>
+                <rect width="400" height="400" fill="url(#popupGlow)" />
+              </svg>
+            </div>
+            <div className="relative z-10 flex flex-col items-center">
+              <div className="flex items-center justify-center w-20 h-20 rounded-full bg-white/10 shadow-lg mb-4 border-2 border-green-400">
+                <CheckCircle className="w-12 h-12 text-green-400" />
+              </div>
+              <h2 className="text-3xl font-extrabold text-green-100 mb-2 drop-shadow-lg">You are scheduled!</h2>
+              <p className="text-lg text-green-50 mb-4">Your meeting has been booked.<br />Check your email for the confirmation and Google Meet link.</p>
+              <button
+                onClick={() => setShowConfirmation(false)}
+                className="mt-2 px-7 py-2.5 rounded-xl bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold text-lg shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-300"
+              >
+                Close
+              </button>
+            </div>
           </motion.div>
         ) : (
           <motion.div
@@ -174,27 +193,60 @@ const Contact = () => {
               >
                 <span className="inline-flex items-center gap-2">
                   <Calendar className="w-5 h-5" />
-                  Schedule a Meeting
+                  📞 Get Free Consultation
                 </span>
               </motion.button>
             </div>
           </motion.div>
         )}
         {showCalendly && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-2">
-            <div className="relative bg-dark-900 rounded-2xl shadow-2xl border border-primary-700/30 w-full max-w-2xl p-0 overflow-hidden flex flex-col items-center">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md px-2">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.97, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.97, y: 30 }}
+              transition={{ duration: 0.35 }}
+              className="relative bg-gradient-to-br from-dark-900 via-dark-950 to-dark-900 rounded-3xl shadow-3xl border border-primary-700/40 w-full max-w-3xl p-0 overflow-hidden flex flex-col md:flex-row items-stretch"
+              style={{
+                boxShadow: '0 8px 32px 0 rgba(59,130,246,0.18), 0 1.5px 8px 0 rgba(0,0,0,0.10)',
+                backdropFilter: 'blur(12px)'
+              }}
+            >
               <button
                 onClick={() => setShowCalendly(false)}
-                className="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl z-10"
+                className="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl z-10 transition-colors duration-150 rounded-full bg-white/5 hover:bg-white/10 w-10 h-10 flex items-center justify-center"
                 aria-label="Close"
+                style={{ lineHeight: 1 }}
               >×</button>
-              <div
-                ref={calendlyWidgetRef}
-                id="calendly-inline-widget"
-                className="w-full h-[700px] bg-white rounded-b-2xl overflow-hidden"
-                style={{ minHeight: 700 }}
-              />
-            </div>
+              {/* Agency Details - Left Side */}
+              <div className="hidden md:flex flex-col justify-center items-start bg-gradient-to-b from-dark-950 via-dark-900 to-dark-950 px-8 py-10 w-full max-w-xs border-r border-dark-800">
+                <div className="mb-6">
+                  <Logo size="default" className="mb-2" />
+                  <h3 className="text-2xl font-bold text-white mb-2">ProDone Agency</h3>
+                  <p className="text-gray-400 mb-4">We build high-performing digital solutions for ambitious brands. Trusted by industry leaders.</p>
+                </div>
+
+                <div className="mt-auto">
+                  <div className="flex items-center gap-2 mb-2 text-gray-300">
+                    <svg className="w-5 h-5 text-primary-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M21 10.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h7.5" /><path d="M16 17l2 2 4-4" /></svg>
+                    yourprodone@gmail.com
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-300">
+                    <svg className="w-5 h-5 text-primary-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M22 16.92V19a2 2 0 0 1-2 2A18 18 0 0 1 3 5a2 2 0 0 1 2-2h2.09a2 2 0 0 1 2 1.72c.13.81.28 1.6.46 2.36a2 2 0 0 1-.45 2.11l-.27.27a16 16 0 0 0 6.29 6.29l.27-.27a2 2 0 0 1 2.11-.45c.76.18 1.55.33 2.36.46A2 2 0 0 1 22 16.92z" /></svg>
+                    +91 96636 14603
+                  </div>
+                </div>
+              </div>
+              {/* Calendly Widget - Right Side */}
+              <div className="flex-1 flex flex-col justify-center items-center bg-white p-0 min-w-[320px]" style={{ minHeight: 700 }}>
+                <div
+                  ref={calendlyWidgetRef}
+                  id="calendly-inline-widget"
+                  className="w-full h-[700px] bg-white rounded-b-3xl overflow-hidden"
+                  style={{ minHeight: 700, padding: 0 }}
+                />
+              </div>
+            </motion.div>
           </div>
         )}
       </div>

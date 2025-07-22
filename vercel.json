@@ -34,10 +34,11 @@
       }
     }
   ],
-  "regions": ["sfo1"],
+  "regions": ["iad1", "sfo1", "fra1", "hnd1", "syd1"],
   "functions": {
     "pages/api/**/*.js": {
-      "maxDuration": 10
+      "maxDuration": 10,
+      "regions": ["iad1", "sfo1", "fra1", "hnd1", "syd1"]
     }
   },
   "env": {

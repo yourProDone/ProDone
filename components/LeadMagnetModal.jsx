@@ -20,7 +20,7 @@ const LeadMagnetModal = () => {
   const watchedValues = watch();
 
   useEffect(() => {
-    const timer = setTimeout(() => setOpen(true), 30000);
+    const timer = setTimeout(() => setOpen(true), 20000);
     return () => clearTimeout(timer);
   }, []);
 
